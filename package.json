@@ -1,0 +1,30 @@
+{
+  "name": "chartbackend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "ChartAI analysis backend",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.69.0",
+    "@google/genai": "^2.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.0",
+    "firebase-admin": "^13.0.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.11.0",
+    "multer": "^2.0.0",
+    "openai": "^6.42.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.0",
+    "vitest": "^3.0.0"
+  }
+}
