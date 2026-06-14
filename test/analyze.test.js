@@ -25,6 +25,23 @@ describe('POST /api/v1/analyze', () => {
     expect(res.body.suggestion.disclaimer.toLowerCase()).toContain('not financial advice');
     expect(res.body.id).toBeTruthy();
     expect(res.body.createdAt).toBeTruthy();
+    expect(res.body.symbol).toBe('EURUSD');
+  });
+
+  it('echoes a trimmed symbol and omits it when blank/absent', async () => {
+    const withBlank = await request(createApp(makeConfig()))
+      .post('/api/v1/analyze')
+      .field('meta', JSON.stringify({ symbol: '   ' }))
+      .attach('chart', img, { filename: 'chart.jpg', contentType: 'image/jpeg' });
+    expect(withBlank.status).toBe(200);
+    expect(withBlank.body.symbol).toBeUndefined();
+
+    const absent = await request(createApp(makeConfig()))
+      .post('/api/v1/analyze')
+      .field('meta', '{}')
+      .attach('chart', img, { filename: 'chart.jpg', contentType: 'image/jpeg' });
+    expect(absent.status).toBe(200);
+    expect(absent.body.symbol).toBeUndefined();
   });
 
   it('400 when no chart file is attached', async () => {

@@ -41,6 +41,9 @@ export const analysisCoreSchema = z.object({
 export const analysisResultSchema = analysisCoreSchema.extend({
   id: z.string().min(1),
   createdAt: z.string().min(1),
+  // Optional asset name the user entered; echoed back from the request meta.
+  // Absent when the user left the field blank.
+  symbol: z.string().min(1).optional(),
 });
 
 export function validateAnalysis(obj) {

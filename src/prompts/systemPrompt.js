@@ -28,11 +28,13 @@ Respond with ONLY a single valid JSON object — no markdown code fences, no pro
   },
   "rawAnalysis": string (a longer Markdown-formatted explanation)
 }
-Do NOT include "id" or "createdAt" — the server adds those.`;
+Do NOT include "id", "createdAt", or "symbol" — the server adds those.`;
 
 export function buildUserPrompt(meta) {
   const parts = ['Analyze this trading chart.'];
-  if (meta?.symbol) parts.push(`Symbol: ${meta.symbol}.`);
+  if (meta?.symbol) {
+    parts.push(`The chart is for the symbol "${meta.symbol}". Treat this as the authoritative asset name and reference it in the summary.`);
+  }
   if (meta?.timeframe) parts.push(`Timeframe: ${meta.timeframe}.`);
   if (meta?.note) parts.push(`User note: ${meta.note}.`);
   if (meta?.depth) parts.push(`Analysis depth: ${meta.depth}.`);

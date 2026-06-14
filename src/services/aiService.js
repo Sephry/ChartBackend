@@ -45,7 +45,13 @@ export function createAiService(config) {
         core.suggestion.disclaimer = DISCLAIMER;
       }
 
-      const result = { id: randomUUID(), createdAt: new Date().toISOString(), ...core };
+      const result = {
+        id: randomUUID(),
+        createdAt: new Date().toISOString(),
+        // Echo the user-entered asset name back when provided (optional).
+        ...(meta?.symbol ? { symbol: meta.symbol } : {}),
+        ...core,
+      };
       return validateAnalysis(result);
     },
   };
