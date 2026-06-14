@@ -41,7 +41,7 @@ export function loadConfig(env = process.env) {
     geminiModel: env.GEMINI_MODEL ?? '',
     appCheckEnforced: bool(env.APP_CHECK_ENFORCED, false),
     trustProxy: trustProxy(env.TRUST_PROXY, 1),
-    logFormat:  'combined',
+    logFormat: 'dev',
     corsOrigins: (env.CORS_ORIGINS ?? '*').split(',').map((s) => s.trim()).filter(Boolean),
     maxUploadBytes: int(env.MAX_UPLOAD_BYTES, 5 * 1024 * 1024),
     rateLimit: {
