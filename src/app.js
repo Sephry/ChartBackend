@@ -11,6 +11,11 @@ export function createApp(config) {
   const app = express();
   app.disable('x-powered-by');
 
+  // Behind a reverse proxy / load balancer the client IP arrives in
+  // X-Forwarded-For. Tell Express how many proxy hops to trust so
+  // express-rate-limit can identify clients correctly. Default: 1.
+  app.set('trust proxy', config.trustProxy ?? false);
+
   // Request logging first, so every request (incl. later-rejected ones) is logged.
   // Silent during tests to keep the suite output clean.
   app.use(morgan(config.logFormat, { skip: () => process.env.NODE_ENV === 'test' }));

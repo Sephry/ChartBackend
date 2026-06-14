@@ -10,6 +10,16 @@ function bool(value, fallback = false) {
   return value.toLowerCase() === 'true';
 }
 
+// Express 'trust proxy' value. Accepts a hop count (e.g. "1"), a boolean,
+// or a pass-through string (subnet/keyword like "loopback", "10.0.0.0/8").
+function trustProxy(value, fallback) {
+  if (value === undefined || value === '') return fallback;
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  const n = Number(value);
+  return Number.isInteger(n) ? n : value;
+}
+
 const KEY_BY_PROVIDER = {
   anthropic: ['anthropicApiKey', 'ANTHROPIC_API_KEY'],
   openai: ['openaiApiKey', 'OPENAI_API_KEY'],
@@ -30,6 +40,7 @@ export function loadConfig(env = process.env) {
     geminiApiKey: env.GEMINI_API_KEY ?? '',
     geminiModel: env.GEMINI_MODEL ?? 'gemini-2.5-flash',
     appCheckEnforced: bool(env.APP_CHECK_ENFORCED, false),
+    trustProxy: trustProxy(env.TRUST_PROXY, 1),
     logFormat: env.LOG_FORMAT ?? ((env.NODE_ENV ?? 'development') === 'production' ? 'combined' : 'dev'),
     corsOrigins: (env.CORS_ORIGINS ?? '*').split(',').map((s) => s.trim()).filter(Boolean),
     maxUploadBytes: int(env.MAX_UPLOAD_BYTES, 5 * 1024 * 1024),

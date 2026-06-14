@@ -26,6 +26,7 @@ See `.env.example`. Key ones:
 - `OPENAI_API_KEY` / `OPENAI_MODEL` (default `gpt-4o`) — required when `AI_PROVIDER=openai`
 - `GEMINI_API_KEY` / `GEMINI_MODEL` (default `gemini-2.5-flash`) — required when `AI_PROVIDER=gemini`
 - `APP_CHECK_ENFORCED` — `false` (default). When `true`, requires a valid `X-Firebase-AppCheck` header (needs Firebase Admin credentials).
+- `TRUST_PROXY` — Express `trust proxy` value, `1` (default) for a single reverse proxy/load balancer. Needed so rate limiting reads the real client IP from `X-Forwarded-For`. Set to `0`/`false` when running with no proxy in front.
 - `LOG_FORMAT` — morgan HTTP log format. Defaults to `dev` locally and `combined` in production; request logging is silenced during tests.
 
 ## Test
@@ -44,8 +45,8 @@ docker run --rm -p 8080:8080 chartbackend
 docker run --rm -p 8080:8080 --env-file .env chartbackend
 ```
 
-The image runs as the non-root `node` user and includes a `/health` healthcheck.
-`PORT` is configurable via env (default `8080`); adjust the `-p` mapping to match.
+The image runs as the non-root `node` user. `PORT` is configurable via env
+(default `8080`); adjust the `-p` mapping to match.
 
 ## Switching to a real AI provider
 
